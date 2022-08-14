@@ -75,6 +75,14 @@ class Resque
         return call_user_func_array($callable, $parameters);
     }
 
+    public static function setBackend($host, $port = Redis::DEFAULT_PORT)
+    {
+        Redis::setConfig(array(
+            'host' => $host,
+            'port' => $port,
+        ));
+    }
+
     /**
      * Reads and loads data from a config file
      *
