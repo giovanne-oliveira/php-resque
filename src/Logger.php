@@ -123,7 +123,8 @@ final class Logger
             $context = is_null($context) ? [] : [$context];
         }
 
-        if (!in_array($logType, $this->instance->getLevels())) {
+        // Validate log level - check if it exists in our log types array
+        if ($logType === null || !isset($this->logTypes[$logType])) {
             $logType = Monolog::INFO;
         }
 

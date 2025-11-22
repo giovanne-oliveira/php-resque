@@ -71,14 +71,14 @@ final class Job
     protected $data;
 
     /**
-     * @var Worker Instance of the worker running this job
+     * @var Worker|null Instance of the worker running this job
      */
-    protected $worker;
+    protected $worker = null;
 
     /**
-     * @var object Instance of the class performing work for this job
+     * @var object|null Instance of the class performing work for this job
      */
-    protected $instance;
+    protected $instance = null;
 
     /**
      * @var array of statuses that are considered final/complete
@@ -214,7 +214,7 @@ final class Job
             $this->data  = $class;
         } else {
             $this->class = $class;
-            if (strpos($this->class, '@')) {
+            if (strpos($this->class, '@') !== false) {
                 [$this->class, $this->method] = explode('@', $this->class, 2);
             }
 
@@ -533,7 +533,7 @@ final class Job
             ];
         }
 
-        $packet['worker']  = (string)$this->worker;
+        $packet['worker']  = $this->worker ? (string)$this->worker : '';
         $packet['status']  = $status;
         $packet['updated'] = microtime(true);
 
@@ -722,9 +722,9 @@ final class Job
     /**
      * Get the queue worker interface
      *
-     * @return Worker
+     * @return Worker|null
      */
-    public function getWorker(): Worker
+    public function getWorker(): ?Worker
     {
         return $this->worker;
     }
